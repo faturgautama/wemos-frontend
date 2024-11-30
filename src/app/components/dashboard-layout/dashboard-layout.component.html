@@ -137,7 +137,8 @@
                 </div>
             </div>
 
-            <div class="grid p-3" [class]="IsBeranda ? '' : 'bg-white shadow-sm rounded-md'"
+            <div class="grid p-3"
+                [class]="IsBeranda ? 'overflow-y-auto' : 'bg-white shadow-sm rounded-md overflow-y-auto'"
                 [style.height]="IsBeranda ? 'calc(100vh - 6rem)' : 'calc(100vh - 10.5rem)'">
                 <ng-content></ng-content>
             </div>

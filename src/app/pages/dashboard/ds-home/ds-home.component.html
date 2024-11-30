@@ -1,3 +1,136 @@
 <app-dashboard-layout [button]="DashboardButton">
-    <p>ds-home works!</p>
+    <!-- User -->
+    <div *ngIf="UserData$ | async as user"
+        class="flex w-full gap-3 items-center p-5 rounded-lg shadow-sm bg-white mb-5 ">
+        <div class="flex">
+            <img src="../../../assets/user.png" alt="user" class="h-14 w-14">
+        </div>
+
+        <div class="flex flex-col gap-0">
+            <p class="text-slate-700 text-3xl font-semibold">
+                Halo, {{ user.full_name | titlecase }}
+            </p>
+
+            <p class="text-slate-600 text-sm">
+                Anda memiliki {{ user.device.length }} device
+            </p>
+        </div>
+    </div>
+
+    <!-- Counting -->
+    <div class="grid grid-cols-4 grid-row-1 gap-4 w-full mb-5">
+        <!-- Pasien Terlayani -->
+        <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3">
+            <div class="flex w-full items-start mb-3">
+                <p class="text-sky-500 font-medium text-5xl text-center">
+                    {{ 2 }}
+                </p>
+
+                <span class="ml-auto cursor-pointer">
+                    <i class="pi pi-arrow-up-right text-gray-600" style="font-size: 13px"></i>
+                </span>
+            </div>
+
+            <p class="text-gray-700 text-sm">
+                Jumlah Device
+            </p>
+        </div>
+
+        <!-- Total -->
+        <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3 justify-center">
+            <div class="flex w-full items-start mb-3">
+                <p class="text-sky-500 font-medium text-5xl text-center">
+                    {{ 12 }}
+                </p>
+
+                <span class="ml-auto cursor-pointer">
+                    <i class="pi pi-arrow-up-right text-gray-600" style="font-size: 13px"></i>
+                </span>
+            </div>
+
+            <p class="text-gray-700 text-sm">
+                Total Konsumsi
+            </p>
+        </div>
+
+        <!-- Dokter Praktek Hari Ini -->
+        <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3 justify-center">
+            <div class="flex w-full items-start mb-3">
+                <p class="text-sky-500 font-medium text-5xl text-center">
+                    {{ 2 }}
+                </p>
+
+                <span class="ml-auto cursor-pointer">
+                    <i class="pi pi-arrow-up-right text-gray-600" style="font-size: 13px"></i>
+                </span>
+            </div>
+
+            <p class="text-gray-700 text-sm">
+                Total Konsumsi Hari Ini
+            </p>
+        </div>
+
+        <!-- Tindakan Medis Hari Ini -->
+        <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3 justify-center">
+            <div class="flex w-full items-start mb-3">
+                <p class="text-sky-500 font-medium text-5xl text-center">
+                    {{ 1 }}
+                </p>
+
+                <span class="ml-auto cursor-pointer">
+                    <i class="pi pi-arrow-up-right text-gray-600" style="font-size: 13px"></i>
+                </span>
+            </div>
+
+            <p class="text-gray-700 text-sm">
+                Device Terhubung
+            </p>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="grid grid-cols-4 w-full items-start gap-4">
+        <div class="flex flex-col gap-2 col-span-3 bg-white rounded-lg shadow-sm p-3 h-[25rem]">
+            <div class="flex flex-col">
+                <p class="text-lg text-gray-800 font-medium tracking-tight leading-6">
+                    Total Konsumsi Anda
+                </p>
+                <p class="text-sm text-gray-600 tracking-tight leading-6">
+                    Menampilkan total konsumsi dalam 7 hari terakhir
+                </p>
+            </div>
+
+            <div class="flex flex-col w-full">
+                <apx-chart *ngIf="Chart" class="flex-auto w-full h-80" [chart]="Chart.chart" [colors]="Chart.colors"
+                    [dataLabels]="Chart.dataLabels" [grid]="Chart.grid" [labels]="Chart.labels" [legend]="Chart.legend"
+                    [plotOptions]="Chart.plotOptions" [series]="Chart.series" [states]="Chart.states"
+                    [stroke]="Chart.stroke" [tooltip]="Chart.tooltip" [xaxis]="Chart.xaxis" [yaxis]="Chart.yaxis">
+                </apx-chart>
+            </div>
+        </div>
+
+        <div class="flex flex-col bg-white rounded-lg shadow-sm p-3 gap-2 h-[25rem]">
+            <!-- Heading -->
+            <div class="flex flex-col">
+                <p class="text-gray-800 text-lg font-medium">
+                    Jumlah Konsumsi Hari Ini
+                </p>
+                <p class="text-gray-600 text-sm">
+                    Menampilkan jumlah konsumsi hari ini
+                </p>
+            </div>
+
+            <div class="flex flex-col">
+                <apx-chart *ngIf="ChartKonsumsiHariIni" class="flex-auto w-full h-80"
+                    [chart]="ChartKonsumsiHariIni.chart" [colors]="ChartKonsumsiHariIni.colors"
+                    [dataLabels]="ChartKonsumsiHariIni.dataLabels" [grid]="ChartKonsumsiHariIni.grid"
+                    [labels]="ChartKonsumsiHariIni.labels" [legend]="ChartKonsumsiHariIni.legend"
+                    [plotOptions]="ChartKonsumsiHariIni.plotOptions" [series]="ChartKonsumsiHariIni.series"
+                    [states]="ChartKonsumsiHariIni.states" [stroke]="ChartKonsumsiHariIni.stroke"
+                    [tooltip]="ChartKonsumsiHariIni.tooltip" [xaxis]="ChartKonsumsiHariIni.xaxis"
+                    [yaxis]="ChartKonsumsiHariIni.yaxis">
+                </apx-chart>
+            </div>
+        </div>
+    </div>
 </app-dashboard-layout>
