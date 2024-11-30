@@ -1,0 +1,140 @@
+<div class="flex flex-row items-center justify-center gap-5 p-5 w-full h-screen">
+    <div class="flex flex-col justify-between h-full w-full md:w-6/12 px-5 py-1">
+        <!-- Brand -->
+        <div class="flex gap-2 items-center">
+            <img src="../../../../assets/logo.png" alt="logo" class="h-[1rem] md:h-[3rem]">
+            <div class="flex flex-col">
+                <p class="text-sky-500 text-2xl md:text-4xl font-semibold">
+                    Wemos
+                </p>
+                <p class="text-sky-400 text-xs">
+                    Short description here
+                </p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="flex flex-col gap-0 px-10 md:px-28">
+            <p class="text-4xl text-center font-semibold text-gray-700">
+                Selamat Datang
+            </p>
+            <p class="text-base text-center font-normal text-gray-700">
+                Masuk untuk mengelola perangkat Anda
+            </p>
+
+            <div [formGroup]="Form"
+                class="flex flex-col w-full pt-5 mt-2 border-t border-b-0 border-x-0 border-dashed border-gray-300">
+                <!-- Full Name -->
+                <div *ngIf="!IsFormLogin" class="flex flex-col w-full gap-1 mb-4">
+                    <p class="text-sm font-medium text-gray-700">
+                        Nama Lengkap
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <input type="text" pInputText class="p-inputtext-sm w-full"
+                        placeholder="Masukkan nama lengkap anda disini" formControlName="full_name">
+
+                    <span *ngIf="Form.get('full_name')?.touched && Form.get('full_name')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Nama lengkap tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Phone Number -->
+                <div *ngIf="!IsFormLogin" class="flex flex-col w-full gap-1 mb-4">
+                    <p class="text-sm font-medium text-gray-700">
+                        No. Handphone
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <input type="tel" pInputText class="p-inputtext-sm w-full"
+                        placeholder="Masukkan no. handphone anda disini" formControlName="phone_number">
+
+                    <span *ngIf="Form.get('phone_number')?.touched && Form.get('phone_number')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            No. handphone tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Email -->
+                <div class="flex flex-col w-full gap-1 mb-4">
+                    <p class="text-sm font-medium text-gray-700">
+                        Email
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <input type="email" pInputText class="p-inputtext-sm w-full"
+                        placeholder="Masukkan email anda disini" formControlName="email">
+
+                    <span *ngIf="Form.get('email')?.touched && Form.get('email')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Email tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Password -->
+                <div class="flex flex-col w-full gap-1 mb-6">
+                    <p class="text-sm font-medium text-gray-700">
+                        Password
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <p-password styleClass="p-inputtext-sm w-full" placeholder="Masukkan password anda disini"
+                        [feedback]="false" [toggleMask]="true" formControlName="password">
+                    </p-password>
+
+                    <span *ngIf="Form.get('password')?.touched && Form.get('password')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Password tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Button Login -->
+                <div *ngIf="IsFormLogin" class="grid w-full">
+                    <p-button severity="info" [disabled]="Form.get('email')?.invalid || Form.get('password')?.invalid"
+                        label="Login" styleClass="w-full p-button-sm" (onClick)="handleLogin()">
+                    </p-button>
+
+                    <p class="text-center text-gray-700 text-sm mt-2">
+                        Belum punya akun?
+                        <span class="text-blue-500 cursor-pointer" (click)="IsFormLogin = false">Register disini</span>
+                    </p>
+                </div>
+
+                <!-- Button Register -->
+                <div *ngIf="!IsFormLogin" class="grid w-full">
+                    <p-button severity="info" [disabled]="Form.invalid" label="Register"
+                        styleClass="w-full p-button-sm">
+                    </p-button>
+
+                    <p class="text-center text-gray-700 text-sm mt-2">
+                        Sudah punya akun?
+                        <span class="text-blue-500 cursor-pointer" (click)="IsFormLogin = true">Login disini</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex flex-row justify-between mt-10">
+            <p class="text-xs text-gray-600">
+                <span class="font-semibold">{{ Year }}</span>. All right reserved
+            </p>
+
+            <p class="text-xs text-gray-600 font-medium">
+                Trijuna Pratama Digital Solution
+            </p>
+        </div>
+    </div>
+    <div class="hidden md:flex w-6/12 p-5 rounded-2xl bg-white shadow-md h-full" id="divLogin">
+
+    </div>
+</div>
