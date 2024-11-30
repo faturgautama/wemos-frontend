@@ -16,5 +16,13 @@ export const dashboardRoutes: Routes = [
             title: 'Beranda',
             breadcrumbs: ['Dashboard', 'Beranda']
         }
+    },
+    {
+        path: 'log',
+        loadComponent: async () => (await import('./ds-log/ds-log.component')).DsLogComponent,
+        data: {
+            title: 'Log Aktifitas',
+            breadcrumbs: ['Dashboard', 'Log Aktifitas']
+        }
     }
 ]

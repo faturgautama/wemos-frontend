@@ -4,14 +4,19 @@
 @import "tailwindcss/utilities";
 @import "primeicons/primeicons.css";
 
+html,
 body {
-  font-family: "Fira Sans", sans-serif !important;
+  font-family: "Nunito", sans-serif;
   margin: 0;
   overflow-x: hidden !important;
 }
 
+.defaultFont {
+  font-family: "Nunito", sans-serif !important;
+}
+
 .font-lora {
-  font-family: "Lora", serif !important;
+  font-family: "Montserrat", serif !important;
 }
 
 p {
@@ -22,34 +27,41 @@ p {
 .p-inputtext-sm .p-inputtext {
   width: 100% !important;
   font-size: 14px !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-inputtext-sm.text-end .p-inputtext {
   width: 100% !important;
   font-size: 14px !important;
   text-align: right !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-inputtext-sm .p-inputnumber {
   width: 100% !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 p-inputnumber,
 .p-inputnumber {
   width: 100% !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-dropdown {
   width: 100% !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-dropdown-item {
   font-size: 14px !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-dropdown-filter {
   padding: 10px !important;
   font-size: 14px !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .spinner {
@@ -97,11 +109,13 @@ p-inputnumber,
 
 .p-datepicker table td {
   padding: 0.5rem !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-datepicker table td > span {
   width: 20px !important;
   height: 20px !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-tabview-panels {
@@ -120,16 +134,18 @@ p-inputnumber,
 .p-tabview-title {
   font-size: 14px !important;
   font-weight: 500 !important;
-  font-family: "Poppins", sans-serif !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-multiselect-label {
   padding: 10px !important;
   font-size: 14px !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-inputtextarea {
   font-size: 14px !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .p-submenu-list {
@@ -165,6 +181,7 @@ p-inputnumber,
 input,
 textarea {
   font-size: 14px !important;
+  font-family: "Nunito", sans-serif !important;
 }
 
 /* width */
