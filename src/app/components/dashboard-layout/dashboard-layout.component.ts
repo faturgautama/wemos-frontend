@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { BehaviorSubject, map, Subject, takeUntil } from 'rxjs';
 import { DashboardModel } from 'src/app/model/components/dashboard.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
     selector: 'app-dashboard-layout',
@@ -18,6 +19,9 @@ import { DashboardModel } from 'src/app/model/components/dashboard.model';
 export class DashboardLayoutComponent implements OnInit, OnDestroy {
 
     Destroy$ = new Subject();
+
+    UserData$ = this._autheticationService.UserData$
+        .pipe(takeUntil(this.Destroy$));
 
     ShowSidebar = false;
 
@@ -50,7 +54,9 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
             toggle_child: false,
             url: '/dashboard/log'
         },
-    ])
+    ]);
+
+    IsBeranda = false;
 
     Title$ = this._activatedRoute.data
         .pipe(
@@ -69,8 +75,15 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
     @Output('onClickButton') onClickButton = new EventEmitter<DashboardModel.IButton>();
 
     constructor(
-        private _activatedRoute: ActivatedRoute
-    ) { }
+        private _activatedRoute: ActivatedRoute,
+        private _autheticationService: AuthenticationService,
+    ) {
+        this._activatedRoute.url
+            .pipe(takeUntil(this.Destroy$))
+            .subscribe((result) => {
+                this.IsBeranda = result[0].path == 'beranda';
+            })
+    }
 
     ngOnInit(): void {
 
