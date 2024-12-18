@@ -1,0 +1,331 @@
+<app-dashboard-layout>
+    <!-- Table -->
+    <div *ngIf="IsList" class="grid w-full bg-white shadow-sm rounded-md p-3">
+        <div class="flex flex-row gap-4 w-full mb-3">
+            <!-- Nama Customer -->
+            <div class="flex flex-col gap-1 w-3/12">
+                <input type="text" pInputText class="p-inputtext-sm w-full defaultFont"
+                    placeholder="Cari nama customer">
+            </div>
+
+            <!-- Device ID -->
+            <div class="flex flex-col gap-1 w-3/12">
+                <input type="text" pInputText class="p-inputtext-sm w-full defaultFont" placeholder="Cari device id">
+            </div>
+
+            <!-- Email -->
+            <div class="flex flex-col gap-1 w-3/12">
+                <input type="text" pInputText class="p-inputtext-sm w-full defaultFont"
+                    placeholder="Cari email customer">
+            </div>
+
+            <!-- Cari -->
+            <div class="flex ml-auto gap-3 items-end">
+                <p-button severity="success" label="Cari" styleClass="p-button-sm defaultFont"
+                    (onClick)="handleGetAll()">
+                </p-button>
+
+                <p-button severity="secondary" label="Export" styleClass="p-button-sm defaultFont">
+                </p-button>
+
+                <p-button severity="info" label="Tambah" styleClass="p-button-sm defaultFont"
+                    (onClick)="IsList = false; IsFormEdit = false">
+                </p-button>
+            </div>
+        </div>
+
+        <div class="grid pt-2 mt-2 border-t border-b-0 border-x-0 border-dashed border-gray-300">
+            <p-table [value]="TableDatasource" styleClass="p-datatable-striped defaultFont"
+                [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="text-sm">#</th>
+                        <th class="text-sm">Nama Customer</th>
+                        <th class="text-sm">Device Id</th>
+                        <th class="text-sm">Email</th>
+                        <th class="text-sm">Tanggal Lahir</th>
+                        <th class="text-sm" style="text-align: center !important;">Status</th>
+                        <th class="text-sm">Waktu Entry</th>
+                        <th class="text-sm" style="text-align: center !important;">Aksi</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+                    <tr (dblclick)="handleEditCustomer(product.id_customer)">
+                        <td class="text-sm">{{ rowIndex + 1 }}</td>
+                        <td class="text-sm">{{ product.full_name }}</td>
+                        <td class="text-sm">{{ product.device_id }}</td>
+                        <td class="text-sm">{{ product.email }}</td>
+                        <td class="text-sm">{{ product.date_of_birth | date: 'dd-MM-yyyy' }}</td>
+                        <td class="text-sm" style="text-align: center !important;">
+                            <span *ngIf="product.is_active"
+                                class="flex w-full items-center justify-center p-1 rounded-lg bg-emerald-100 text-emerald-700 font-medium text-xs">
+                                Aktif
+                            </span>
+
+                            <span *ngIf="!product.is_active"
+                                class="flex w-full items-center justify-center p-1 rounded-lg bg-red-100 text-red-700 font-medium text-xs">
+                                Tidak Aktif
+                            </span>
+                        </td>
+                        <td class="text-sm">{{ product.created_at | date: 'dd-MM-yyyy HH:mm' }}</td>
+                        <td class="text-sm" style="text-align: center !important;">
+                            <span (click)="op.toggle($event)">
+                                <i class="pi pi-ellipsis-v"></i>
+                            </span>
+
+                            <p-overlayPanel #op>
+                                <div class="flex flex-col gap-3 w-auto p-2 defaultFont">
+                                    <span class="text-base text-gray-700 cursor-pointer"
+                                        (click)="handleEditCustomer(product.id_customer)">
+                                        <i class="pi pi-file" style="font-size: 12px"></i>&nbsp;
+                                        Detail
+                                    </span>
+
+                                    <span class="text-base text-gray-700 cursor-pointer"
+                                        (click)="handleUpdateStatusCustomer(product)">
+                                        <i class="pi pi-sync" style="font-size: 12px"></i>&nbsp;
+                                        Ubah Status
+                                    </span>
+                                </div>
+                            </p-overlayPanel>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div *ngIf="!IsList" class="grid gap-3 md:w-8/12">
+        <!-- Customer -->
+        <div class="grid bg-white shadow-sm rounded-md p-3">
+            <div class=" flex flex-col gap-0 mb-2 pb-2 border-dashed border-gray-300 border-b border-t-0 border-x-0">
+                <p class="text-lg text-gray-800 font-semibold">
+                    Detail Customer
+                </p>
+                <p class="text-sm text-gray-600">
+                    Input informasi customer dibawah ini
+                </p>
+            </div>
+
+            <!-- Form -->
+            <div [formGroup]="FormCustomer" class="grid grid-cols-2 grid-rows-2 grid-flow-col gap-3">
+                <!-- Nama Lengkap -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Nama Lengkap
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <input type="text" pInputText class="p-inputtext-sm w-full"
+                        placeholder="Masukkan nama lengkap disini" formControlName="full_name">
+
+                    <span *ngIf="FormCustomer.get('full_name')?.touched && FormCustomer.get('full_name')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Nama lengkap tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Tanggal Lahir -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Tanggal Lahir
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <p-calendar styleClass="p-inputtext-sm w-full" dateFormat="dd MM yy" appendTo="body"
+                        placeholder="Input tanggal lahir" formControlName="date_of_birth">
+                    </p-calendar>
+
+                    <span
+                        *ngIf="FormCustomer.get('date_of_birth')?.touched && FormCustomer.get('date_of_birth')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Tanggal lahir tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Tinggi Badan -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Tinggi Badan (cm)
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <p-inputNumber styleClass="p-inputtext-sm w-full" placeholder="Input tinggi badan"
+                        formControlName="height">
+                    </p-inputNumber>
+
+                    <span *ngIf="FormCustomer.get('height')?.touched && FormCustomer.get('height')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Tinggi badan tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Berat Badan -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Berat Badan (kg)
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <p-inputNumber styleClass="p-inputtext-sm w-full" placeholder="Input berat badan"
+                        formControlName="weight">
+                    </p-inputNumber>
+
+                    <span *ngIf="FormCustomer.get('weight')?.touched && FormCustomer.get('weight')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Berat badan tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device -->
+        <div class="grid bg-white shadow-sm rounded-md p-3">
+            <div class=" flex flex-col gap-0 mb-2 pb-2 border-dashed border-gray-300 border-b border-t-0 border-x-0">
+                <p class="text-lg text-gray-800 font-semibold">
+                    Detail Device
+                </p>
+                <p class="text-sm text-gray-600">
+                    Input informasi device dibawah ini
+                </p>
+            </div>
+
+            <!-- Form -->
+            <div [formGroup]="FormCustomer" class="grid grid-cols-2 grid-rows-3 grid-flow-row gap-3">
+                <!-- Device Id -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Device Id
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <input type="text" pInputText class="p-inputtext-sm w-full" placeholder="Masukkan device id disini"
+                        formControlName="device_id">
+
+                    <span *ngIf="FormCustomer.get('device_id')?.touched && FormCustomer.get('device_id')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Device Id tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Device Name -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Device Name
+                    </p>
+
+                    <input type="text" pInputText class="p-inputtext-sm w-full"
+                        placeholder="Masukkan device name disini" formControlName="device_name">
+                </div>
+
+                <!-- Device Type -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Device Type
+                    </p>
+
+                    <input type="text" pInputText class="p-inputtext-sm w-full"
+                        placeholder="Masukkan device type disini" formControlName="device_type">
+                </div>
+
+                <!-- Device Size -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Device Size
+                    </p>
+
+                    <input type="text" pInputText class="p-inputtext-sm w-full"
+                        placeholder="Masukkan device type disini" formControlName="device_size">
+                </div>
+
+                <!-- Device Notes -->
+                <div class="flex flex-col w-full gap-1 mb-0 row-span-2 col-span-2">
+                    <p class="text-sm font-medium text-gray-700">
+                        Device Notes
+                    </p>
+
+                    <textarea rows="2" pInputTextarea class="p-inputtext-sm w-full"
+                        placeholder="Masukkan device notes disini" formControlName="device_notes"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Akun Customer -->
+        <div class="grid bg-white shadow-sm rounded-md p-3">
+            <div class=" flex flex-col gap-0 mb-2 pb-2 border-dashed border-gray-300 border-b border-t-0 border-x-0">
+                <p class="text-lg text-gray-800 font-semibold">
+                    Akun Customer
+                </p>
+                <p class="text-sm text-gray-600">
+                    Input akun customer dibawah ini
+                </p>
+            </div>
+
+            <!-- Form -->
+            <div [formGroup]="FormCustomer" class="grid grid-cols-2 grid-rows-1 grid-flow-col gap-3 mb-5">
+                <!-- Email -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Email
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <input type="email" pInputText class="p-inputtext-sm w-full"
+                        placeholder="Masukkan email customer disini" formControlName="email">
+
+                    <span *ngIf="FormCustomer.get('email')?.touched && FormCustomer.get('email')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Email tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+
+                <!-- Password -->
+                <div class="flex flex-col w-full gap-1 mb-0">
+                    <p class="text-sm font-medium text-gray-700">
+                        Password
+                        <span class="text-red-500 font-medium">*</span>
+                    </p>
+
+                    <p-password styleClass="p-inputtext-sm w-full" placeholder="Masukkan password customer disini"
+                        [feedback]="false" [toggleMask]="true" formControlName="password">
+                    </p-password>
+
+                    <span *ngIf="FormCustomer.get('password')?.touched && FormCustomer.get('password')?.invalid"
+                        class="flex p-2 bg-red-100 w-full rounded-md">
+                        <p class="text-xs text-red-700 font-medium">
+                            Password tidak boleh kosong
+                        </p>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="flex w-full gap-3 justify-end">
+                <p-button severity="secondary" label="Kembali" styleClass="w-full p-button-sm"
+                    (onClick)="handleBackToList()">
+                </p-button>
+
+                <p-button *ngIf="!IsFormEdit" severity="info" label="Simpan" styleClass="w-full p-button-sm"
+                    (onClick)="handleSaveCustomer()">
+                </p-button>
+
+                <p-button *ngIf="IsFormEdit" severity="warning" label="Update" styleClass="w-full p-button-sm"
+                    (onClick)="handleUpdateCustomer()">
+                </p-button>
+            </div>
+        </div>
+    </div>
+</app-dashboard-layout>

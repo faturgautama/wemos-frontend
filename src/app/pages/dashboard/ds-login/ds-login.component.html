@@ -24,44 +24,26 @@
 
             <div [formGroup]="Form"
                 class="flex flex-col w-full pt-5 mt-2 border-t border-b-0 border-x-0 border-dashed border-gray-300">
-                <!-- Full Name -->
-                <div *ngIf="!IsFormLogin" class="flex flex-col w-full gap-1 mb-4">
+                <!-- Device Id -->
+                <div *ngIf="IsFormLoginCustomer" class="flex flex-col w-full gap-1 mb-4">
                     <p class="text-sm font-medium text-gray-700">
-                        Nama Lengkap
+                        Device Id
                         <span class="text-red-500 font-medium">*</span>
                     </p>
 
                     <input type="text" pInputText class="p-inputtext-sm w-full"
-                        placeholder="Masukkan nama lengkap anda disini" formControlName="full_name">
+                        placeholder="Masukkan device id anda disini" formControlName="device_id">
 
-                    <span *ngIf="Form.get('full_name')?.touched && Form.get('full_name')?.invalid"
+                    <span *ngIf="Form.get('device_id')?.touched && Form.get('device_id')?.invalid"
                         class="flex p-2 bg-red-100 w-full rounded-md">
                         <p class="text-xs text-red-700 font-medium">
-                            Nama lengkap tidak boleh kosong
-                        </p>
-                    </span>
-                </div>
-
-                <!-- Phone Number -->
-                <div *ngIf="!IsFormLogin" class="flex flex-col w-full gap-1 mb-4">
-                    <p class="text-sm font-medium text-gray-700">
-                        No. Handphone
-                        <span class="text-red-500 font-medium">*</span>
-                    </p>
-
-                    <input type="tel" pInputText class="p-inputtext-sm w-full"
-                        placeholder="Masukkan no. handphone anda disini" formControlName="phone_number">
-
-                    <span *ngIf="Form.get('phone_number')?.touched && Form.get('phone_number')?.invalid"
-                        class="flex p-2 bg-red-100 w-full rounded-md">
-                        <p class="text-xs text-red-700 font-medium">
-                            No. handphone tidak boleh kosong
+                            Device Id tidak boleh kosong
                         </p>
                     </span>
                 </div>
 
                 <!-- Email -->
-                <div class="flex flex-col w-full gap-1 mb-4">
+                <div *ngIf="!IsFormLoginCustomer" class="flex flex-col w-full gap-1 mb-4">
                     <p class="text-sm font-medium text-gray-700">
                         Email
                         <span class="text-red-500 font-medium">*</span>
@@ -97,27 +79,32 @@
                     </span>
                 </div>
 
-                <!-- Button Login -->
-                <div *ngIf="IsFormLogin" class="grid w-full">
-                    <p-button severity="info" [disabled]="Form.get('email')?.invalid || Form.get('password')?.invalid"
-                        label="Login" styleClass="w-full p-button-sm" (onClick)="handleLogin()">
+                <!-- Button Login Customer -->
+                <div *ngIf="IsFormLoginCustomer" class="grid w-full">
+                    <p-button severity="info"
+                        [disabled]="Form.get('device_id')?.invalid || Form.get('password')?.invalid" label="Login"
+                        styleClass="w-full p-button-sm" (onClick)="handleLoginCustomer()">
                     </p-button>
 
                     <p class="text-center text-gray-700 text-sm mt-2">
-                        Belum punya akun?
-                        <span class="text-blue-500 cursor-pointer" (click)="IsFormLogin = false">Register disini</span>
+                        Apakah Anda Pengelola?
+                        <span class="text-blue-500 cursor-pointer" (click)="IsFormLoginCustomer = false">
+                            Login disini
+                        </span>
                     </p>
                 </div>
 
-                <!-- Button Register -->
-                <div *ngIf="!IsFormLogin" class="grid w-full">
-                    <p-button severity="info" [disabled]="Form.invalid" label="Register"
-                        styleClass="w-full p-button-sm">
+                <!-- Button Login User -->
+                <div *ngIf="!IsFormLoginCustomer" class="grid w-full">
+                    <p-button severity="info" [disabled]="Form.get('email')?.invalid || Form.get('password')?.invalid"
+                        label="Login" styleClass="w-full p-button-sm" (onClick)="handleLoginUser()">
                     </p-button>
 
                     <p class="text-center text-gray-700 text-sm mt-2">
-                        Sudah punya akun?
-                        <span class="text-blue-500 cursor-pointer" (click)="IsFormLogin = true">Login disini</span>
+                        Apakah Anda Customer
+                        <span class="text-blue-500 cursor-pointer" (click)="IsFormLoginCustomer = true">
+                            Login disini
+                        </span>
                     </p>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { BehaviorSubject, map, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, map, Subject, takeUntil, tap } from 'rxjs';
 import { DashboardModel } from 'src/app/model/components/dashboard.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -24,41 +24,66 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
 
     Destroy$ = new Subject();
 
-    UserData$ = this._autheticationService.UserData$
-        .pipe(takeUntil(this.Destroy$));
-
     ShowSidebar = false;
 
-    SidebarMenu$ = new BehaviorSubject<any[]>([
-        {
-            id: '1',
-            caption: 'Home',
-            icon: 'pi pi-home',
-            toggle_child: false,
-            url: '/dashboard/beranda'
-        },
-        // {
-        //     id: '2',
-        //     caption: 'Perangkat Anda',
-        //     icon: 'pi pi-mobile',
-        //     toggle_child: false,
-        //     url: '/dashboard/perangkat'
-        // },
-        // {
-        //     id: '3',
-        //     caption: 'Profile Anda',
-        //     icon: 'pi pi-user',
-        //     toggle_child: false,
-        //     url: '/dashboard/profile'
-        // },
-        {
-            id: '4',
-            caption: 'Log Aktifitas',
-            icon: 'pi pi-list',
-            toggle_child: false,
-            url: '/dashboard/log'
-        },
-    ]);
+    SidebarMenu$ = new BehaviorSubject<any[]>([]);
+
+    UserData$ = this._autheticationService
+        .UserData$
+        .pipe(
+            takeUntil(this.Destroy$),
+            tap((result) => {
+                if (result.id_customer) {
+                    this.SidebarMenu$.next([
+                        {
+                            id: '1',
+                            caption: 'Home',
+                            icon: 'pi pi-home',
+                            toggle_child: false,
+                            url: '/dashboard/beranda'
+                        },
+                        {
+                            id: '2',
+                            caption: 'Profile Anda',
+                            icon: 'pi pi-user',
+                            toggle_child: false,
+                            url: '/dashboard/profile'
+                        },
+                        {
+                            id: '4',
+                            caption: 'Log Aktifitas',
+                            icon: 'pi pi-list',
+                            toggle_child: false,
+                            url: '/dashboard/log'
+                        },
+                    ])
+                } else {
+                    this.SidebarMenu$.next([
+                        {
+                            id: '1',
+                            caption: 'Home',
+                            icon: 'pi pi-home',
+                            toggle_child: false,
+                            url: '/dashboard/beranda'
+                        },
+                        {
+                            id: '3',
+                            caption: 'Customer',
+                            icon: 'pi pi-user',
+                            toggle_child: false,
+                            url: '/dashboard/customer'
+                        },
+                        {
+                            id: '4',
+                            caption: 'Log Aktifitas',
+                            icon: 'pi pi-list',
+                            toggle_child: false,
+                            url: '/dashboard/log'
+                        },
+                    ])
+                }
+            })
+        )
 
     IsBeranda = false;
 
@@ -118,7 +143,7 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-
+        this._autheticationService.setUserData();
     }
 
     ngOnDestroy(): void {

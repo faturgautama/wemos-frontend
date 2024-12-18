@@ -1,34 +1,58 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { AuthenticationModel } from '../model/pages/authentication.model';
+import { HttpOperationService } from './http-operation.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
 
-    UserData$ = new BehaviorSubject<AuthenticationModel.IUser>({
-        id_user: '1',
-        full_name: 'Fatur Gautama S',
-        phone_number: '+6285156789101',
-        email: 'faturgautama.dev@gmail.com',
-        device: [
-            {
-                id_device: '1',
-                device_name: 'Device Thermos A',
-                device_code: 'TH-A001',
-                created_at: new Date(),
-                is_connected: true
-            },
-            {
-                id_device: '2',
-                device_name: 'Device Thermos B',
-                device_code: 'TH-A002',
-                created_at: new Date(),
-                is_connected: false
-            }
-        ]
-    });
+    UserData$ = new BehaviorSubject<AuthenticationModel.ILoginCustomer>(null as any);
 
-    constructor() { }
+    constructor(
+        private _httpOperationService: HttpOperationService,
+    ) { }
+
+    loginCustomer(device_id: string, password: string) {
+        return this._httpOperationService
+            .postRequest(`${environment.api}/authentication/signInCustomer`, { device_id, password })
+            .pipe(
+                tap((result) => {
+                    if (result.status) {
+                        this.UserData$.next(result.data);
+                        this.handleSignIn(result.data);
+                    }
+                })
+            )
+    }
+
+    loginUser(email: string, password: string) {
+        return this._httpOperationService
+            .postRequest(`${environment.api}/authentication/signInUser`, { email, password })
+            .pipe(
+                tap((result) => {
+                    if (result.status) {
+                        this.UserData$.next(result.data);
+                        this.handleSignIn(result.data);
+                    }
+                })
+            )
+    }
+
+    setUserData() {
+        const user_data = localStorage.getItem("_WEMOS_LOGIN_DATA_") as any;
+        this.UserData$.next(JSON.parse(user_data as any));
+    }
+
+    getUserData() {
+        const user_data = localStorage.getItem("_WEMOS_LOGIN_DATA_");
+        return JSON.parse(user_data as any);
+    }
+
+    private handleSignIn(data: any) {
+        localStorage.clear();
+        localStorage.setItem("_WEMOS_LOGIN_DATA_", JSON.stringify(data));
+    }
 }

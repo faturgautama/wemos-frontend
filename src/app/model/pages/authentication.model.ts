@@ -1,29 +1,23 @@
 export namespace AuthenticationModel {
-    export interface ILogin {
-        email: string;
-        password: string;
+    export interface ILoginCustomer {
+        id_customer: number
+        device_id: string
+        device_name: string
+        device_type: string
+        device_size: string
+        device_notes: string
+        full_name: string
+        date_of_birth: string
+        weight: number
+        height: number
+        email: string
+        token: string
     }
 
-    export interface IRegister {
-        full_name: string;
-        phone_number: string;
-        email: string;
-        password: string;
-    }
-
-    export interface IUser {
-        id_user: string;
-        full_name: string;
-        phone_number: string;
-        email: string;
-        device: IDevice[]
-    }
-
-    export interface IDevice {
-        id_device: string;
-        device_name: string;
-        device_code: string;
-        created_at: Date;
-        is_connected: boolean;
+    export interface ILoginUser {
+        id_user: number
+        full_name: string
+        email: string
+        token: string
     }
 }
