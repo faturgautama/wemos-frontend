@@ -223,6 +223,34 @@ export class HttpOperationService {
     }
 
     /**
+     * @description Put Request Method
+     * @param url 
+     * @param data 
+     * @param showSuccessNotif -> (Optional) jika ingin menampilkan notification success
+     * @returns Observable<HttpBaseResponse>
+    */
+    putRequestWithoutLoading(url: string, data: any, showSuccessNotif?: boolean): Observable<HttpBaseResponse> {
+        return this._httpClient.put<HttpBaseResponse>(url, data)
+            .pipe(
+                map((result) => {
+                    // ** Jika status = false
+                    if (!result.status) {
+                        this._messageService.clear();
+                        (<any>result.message).forEach((item: string) => {
+                            this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(item) })
+                        })
+                    }
+
+                    return result;
+                }),
+                catchError((error: any) => {
+                    this.handlingError(error);
+                    throw error;
+                })
+            )
+    }
+
+    /**
      * @description Delete Request Method
      * @param url 
      * @param data 

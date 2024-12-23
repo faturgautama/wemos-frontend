@@ -16,7 +16,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { TitleCasePipe } from '@angular/common';
 import { JwtInterceptor } from './middleware/jwt.interceptor';
 
-const config: SocketIoConfig = { url: environment.api, options: {} };
+const config: SocketIoConfig = { url: environment.socket, options: {} };
 
 @NgModule({
     declarations: [

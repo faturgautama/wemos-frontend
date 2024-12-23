@@ -67,13 +67,13 @@
 
                 <div class="flex gap-2 items-center">
 
-                    <img src="../../../../assets/logo.png" alt="logo" class="h-[2rem]">
+                    <img src="../../../../assets/logo_2.png" alt="logo" class="h-[2rem]">
                     <div class="flex flex-col">
-                        <p class="text-sky-500 text-xl font-semibold leading-4">
-                            Wemos
+                        <p class="text-blue-900 text-xl font-semibold leading-4">
+                            Segara Tumbler
                             <br>
-                            <span class="text-sky-400 text-xs font-normal">
-                                Short description here
+                            <span class="text-blue-700 text-xs font-normal">
+                                Segara Tumbler Dashboard
                             </span>
                         </p>
                     </div>
@@ -100,9 +100,9 @@
         </div>
 
         <p-overlayPanel #op>
-            <div class="flex flex-col p-2 gap-3 w-[25rem] defaultFont">
+            <div *ngIf="Notifikasi.length" class="flex flex-col p-2 gap-3 w-[25rem] defaultFont">
                 <div
-                    class="flex flex-row justify-between items-center mb-2 pb-2 border-b border-t-0 border-x-0 border-dashed border-gray-300">
+                    class="flex flex-row justify-between items-center pb-2 border-b border-t-0 border-x-0 border-dashed border-gray-300">
                     <span class="text-lg text-gray-700 font-medium">
                         Notifikasi
                     </span>
@@ -112,24 +112,40 @@
                     </span>
                 </div>
 
-                <div *ngFor="let item of Notifikasi$ | async"
-                    class="flex flex-col p-2 {{ item.is_read ? 'bg-gray-50' : 'bg-blue-50'}} rounded-md cursor-pointer"
-                    (click)="item.is_read = true">
+                <div *ngFor="let item of Notifikasi"
+                    class="flex flex-col p-2 {{ item.is_read ? 'bg-gray-50' : 'bg-blue-50'}} rounded-md cursor-pointer">
                     <div class="flex justify-between items-center">
-                        <p class="text-gray-800 font-semibold text-base">
+                        <p class="text-gray-800 font-semibold text-base"
+                            (click)="handleUpdateNotification(item.id_notification, item.url); op.hide()">
                             {{ item.title }}
                         </p>
 
-                        <span class="cursor-pointer">
+                        <span class="cursor-pointer"
+                            (click)="handleDeleteNotification(item.id_notification); op.hide()">
                             <i class="pi pi-times text-red-500" style="font-size: 11px"></i>
                         </span>
                     </div>
-                    <p class="text-gray-700 text-sm">
+                    <p class="text-gray-700 text-sm"
+                        (click)="handleUpdateNotification(item.id_notification, item.url); op.hide()">
                         {{ item.description }}
                     </p>
-                    <p class="text-gray-600 text-xs">
+                    <p class="text-gray-600 text-xs"
+                        (click)="handleUpdateNotification(item.id_notification, item.url); op.hide()">
                         {{ item.created_at | date: 'dd MMMM yyyy HH:mm' }}
                     </p>
+                </div>
+            </div>
+
+            <div *ngIf="!Notifikasi.length" class="flex flex-col p-2 gap-3 w-[25rem] defaultFont">
+                <div
+                    class="flex flex-row justify-between items-center mb-2 pb-2 border-b border-t-0 border-x-0 border-dashed border-gray-300">
+                    <span class="text-lg text-gray-700 font-medium">
+                        Tidak Ada Notifikasi Baru
+                    </span>
+
+                    <span class="cursor-pointer" (click)="op.hide()">
+                        <i class="pi pi-times"></i>
+                    </span>
                 </div>
             </div>
         </p-overlayPanel>

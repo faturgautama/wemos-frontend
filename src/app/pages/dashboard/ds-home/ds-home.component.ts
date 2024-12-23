@@ -1,4 +1,4 @@
-import { CommonModule, formatNumber } from '@angular/common';
+import { CommonModule, formatDate, formatNumber } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { DashboardLayoutComponent } from 'src/app/components/dashboard-layout/dashboard-layout.component';
 import { DashboardModel } from 'src/app/model/components/dashboard.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
     selector: 'app-ds-home',
@@ -33,8 +34,11 @@ export class DsHomeComponent implements OnInit, OnDestroy {
 
     ChartKonsumsiHariIni: any = {};
 
+    ReportCustomer: any;
+
     constructor(
         private _router: Router,
+        private _customerService: CustomerService,
         private _authentiationService: AuthenticationService,
     ) { }
 
@@ -56,41 +60,22 @@ export class DsHomeComponent implements OnInit, OnDestroy {
         };
 
         this.Chart.labels = [];
-        this.Chart.labels = [
-            '21 Nov 2024',
-            '22 Nov 2024',
-            '23 Nov 2024',
-            '24 Nov 2024',
-            '25 Nov 2024',
-            '26 Nov 2024',
-            '27 Nov 2024',
-            '28 Nov 2024',
-        ];
 
         this.Chart.series = [];
         this.Chart.series = [
             {
                 name: 'Konsumsi',
-                data: [1.5, 2, 2, 3, 1.7, 2.1, 1.7, 2.6],
+                data: [],
             }
         ];
 
         this.ChartKonsumsiHariIni.labels = [];
-        this.ChartKonsumsiHariIni.labels = [
-            '05:16',
-            '07:00',
-            '10:01',
-            '12:11',
-            '15:44',
-            '17:22',
-            '21:00',
-        ];
 
         this.ChartKonsumsiHariIni.series = [];
         this.ChartKonsumsiHariIni.series = [
             {
                 name: 'Konsumsi',
-                data: [0.5, 0.3, 0.1, 0.3, 0.4, 0.7, 0.5],
+                data: [],
             }
         ];
     }
@@ -272,15 +257,7 @@ export class DsHomeComponent implements OnInit, OnDestroy {
                 tooltip: {
                     enabled: false,
                 },
-                categories: [
-                    '05:16',
-                    '07:00',
-                    '10:01',
-                    '12:11',
-                    '15:44',
-                    '17:22',
-                    '21:00',
-                ]
+                categories: []
             },
             // yaxis: {
             //     labels: {
@@ -294,6 +271,50 @@ export class DsHomeComponent implements OnInit, OnDestroy {
             //     },
             // },
         };
+
+        this.getReportCustomer();
+    }
+
+    private getReportCustomer() {
+        const id_customer = JSON.parse(localStorage.getItem("_WEMOS_LOGIN_DATA_") as any).id_customer;
+
+        this._customerService
+            .getReport(id_customer)
+            .pipe(takeUntil(this.Destroy$))
+            .subscribe((result: any) => {
+                if (result.status) {
+                    this.ReportCustomer = result.data;
+
+                    this.Chart.labels = [];
+                    this.Chart.series = [
+                        {
+                            name: 'Konsumsi',
+                            data: []
+                        }
+                    ];
+
+                    result.data['weekly_consume'].forEach((item: any) => {
+                        this.Chart.labels.push(formatDate(new Date(item.date_time), 'dd MMM yyyy', 'EN'));
+                        this.Chart.series[0].data.push(item.litre);
+                    });
+
+                    this.ChartKonsumsiHariIni.labels = [];
+                    this.ChartKonsumsiHariIni.series = [
+                        {
+                            name: 'Konsumsi',
+                            data: []
+                        }
+                    ];
+
+                    result.data['today_consume'].forEach((item: any) => {
+                        const date_time = formatDate(new Date(item.date_time), 'HH:mm', 'EN');
+                        console.log("time consume =>", date_time);
+
+                        this.ChartKonsumsiHariIni.labels.push(date_time);
+                        this.ChartKonsumsiHariIni.series[0].data.push(item.litre);
+                    });
+                }
+            })
     }
 
     ngOnDestroy(): void {

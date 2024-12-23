@@ -8,6 +8,9 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { UtilityService } from 'src/app/services/utility.service';
 import { MessageService } from 'primeng/api';
+import { NotificationService } from 'src/app/services/notification.service';
+import { Socket } from 'ngx-socket-io';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
     selector: 'app-dashboard-layout',
@@ -100,29 +103,7 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
         );
 
 
-    Notifikasi$ = new BehaviorSubject<any[]>([
-        {
-            id: 1,
-            title: 'Device Thermos A Tidak Terhubung',
-            description: 'Oops... perangkat anda terputus',
-            created_at: new Date(),
-            is_read: false
-        },
-        {
-            id: 2,
-            title: 'Device Thermos B Terhubung',
-            description: 'Yes... perangkat anda terhubung',
-            created_at: new Date(),
-            is_read: false
-        },
-        {
-            id: 3,
-            title: 'Aktifitas Baru',
-            description: 'Aktifitas baru pada Device Thermos A',
-            created_at: new Date(),
-            is_read: true
-        },
-    ])
+    Notifikasi: any[] = [];
 
     @Input('button') button!: DashboardModel.IButton[];
 
@@ -130,25 +111,94 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
 
     constructor(
         private _router: Router,
+        private _socket: Socket,
+        private _logService: LogService,
         private _utilityService: UtilityService,
         private _activatedRoute: ActivatedRoute,
         private _messageService: MessageService,
+        private _notificationService: NotificationService,
         private _autheticationService: AuthenticationService,
     ) {
         this._activatedRoute.url
             .pipe(takeUntil(this.Destroy$))
             .subscribe((result) => {
                 this.IsBeranda = result[0].path == 'beranda';
+            });
+
+        this._socket
+            .fromEvent('getNotif')
+            .pipe(
+                takeUntil(this.Destroy$),
+                map((result: any) => {
+                    const user = this._autheticationService.getUserData();
+                    return result.includes(user.id_customer);
+                })
+            )
+            .subscribe((result: any) => {
+                if (result) {
+                    this._messageService.add({ severity: 'info', summary: 'Notifikasi Baru', detail: 'Anda Memiliki Notifikasi Baru' })
+                    this.getAllNotification();
+
+                    const currentUrl = this._activatedRoute.snapshot.url[0].path;
+
+                    if (currentUrl == 'log') {
+                        this._logService.RefreshData$.next(true);
+                    };
+                }
             })
     }
 
     ngOnInit(): void {
         this._autheticationService.setUserData();
+
+        const user = this._autheticationService.getUserData();
+        if (user.id_customer) {
+            this.getAllNotification();
+        }
     }
 
     ngOnDestroy(): void {
         this.Destroy$.next(0);
         this.Destroy$.complete();
+    }
+
+    private getAllNotification() {
+        this._notificationService
+            .getAll()
+            .pipe(takeUntil(this.Destroy$))
+            .subscribe((result) => {
+                this.Notifikasi = result.data;
+            })
+    }
+
+    handleUpdateNotification(id_notification: number, url: string) {
+        this._notificationService
+            .update(id_notification)
+            .pipe(takeUntil(this.Destroy$))
+            .subscribe((result) => {
+                if (result.status) {
+                    this.getAllNotification();
+
+                    const currentUrl = this._activatedRoute.snapshot.url[0].path;
+
+                    if (currentUrl == 'log') {
+                        this._logService.RefreshData$.next(true);
+                    } else {
+                        this._router.navigateByUrl(url);
+                    }
+                }
+            })
+    }
+
+    handleDeleteNotification(id_notification: number) {
+        this._notificationService
+            .delete(id_notification)
+            .pipe(takeUntil(this.Destroy$))
+            .subscribe((result) => {
+                if (result.status) {
+                    this.getAllNotification();
+                }
+            })
     }
 
     handleButtonClick(args: DashboardModel.IButton) {

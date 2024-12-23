@@ -26,6 +26,14 @@ export const dashboardRoutes: Routes = [
         }
     },
     {
+        path: 'profile',
+        loadComponent: async () => (await import('./ds-customer/ds-customer.component')).DsCustomerComponent,
+        data: {
+            title: 'Profile',
+            breadcrumbs: ['Dashboard', 'Profile']
+        }
+    },
+    {
         path: 'log',
         loadComponent: async () => (await import('./ds-log/ds-log.component')).DsLogComponent,
         data: {

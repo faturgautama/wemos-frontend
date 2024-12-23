@@ -314,7 +314,7 @@
 
             <!-- Button -->
             <div class="flex w-full gap-3 justify-end">
-                <p-button severity="secondary" label="Kembali" styleClass="w-full p-button-sm"
+                <p-button *ngIf="!IsProfilePage" severity="secondary" label="Kembali" styleClass="w-full p-button-sm"
                     (onClick)="handleBackToList()">
                 </p-button>
 

@@ -1,5 +1,5 @@
 import { CommonModule, formatDate } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -14,6 +14,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { PasswordModule } from 'primeng/password';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessageService } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-ds-customer',
@@ -36,7 +37,9 @@ import { MessageService } from 'primeng/api';
     templateUrl: './ds-customer.component.html',
     styleUrl: './ds-customer.component.scss'
 })
-export class DsCustomerComponent implements OnInit, OnDestroy {
+export class DsCustomerComponent implements OnInit, AfterViewInit, OnDestroy {
+
+    IsProfilePage = false;
 
     IsList = true;
 
@@ -66,12 +69,25 @@ export class DsCustomerComponent implements OnInit, OnDestroy {
 
     constructor(
         private _formBuilder: FormBuilder,
+        private _activatedRoute: ActivatedRoute,
         private _messageService: MessageService,
         private _customerService: CustomerService,
     ) { }
 
     ngOnInit(): void {
         this.handleGetAll();
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.IsProfilePage = this._activatedRoute.snapshot.url[0].path.includes("profile");
+
+            if (this.IsProfilePage) {
+                this.IsList = false;
+                this.IsFormEdit = true;
+                this.handleGetById();
+            }
+        }, 1);
     }
 
     ngOnDestroy(): void {
@@ -86,6 +102,20 @@ export class DsCustomerComponent implements OnInit, OnDestroy {
             .subscribe((result) => {
                 if (result.status) {
                     this.TableDatasource = result.data;
+                }
+            })
+    }
+
+    handleGetById() {
+        const id_customer = JSON.parse(localStorage.getItem("_WEMOS_LOGIN_DATA_") as any).id_customer;
+
+        this._customerService
+            .getById(id_customer)
+            .pipe(takeUntil(this.Destroy$))
+            .subscribe((result: any) => {
+                if (result.status) {
+                    result.data.date_of_birth = new Date(result.data.date_of_birth);
+                    this.FormCustomer.patchValue(result.data);
                 }
             })
     }
@@ -133,7 +163,12 @@ export class DsCustomerComponent implements OnInit, OnDestroy {
                 if (result.status) {
                     this._messageService.clear();
                     this._messageService.add({ severity: 'success', summary: 'Berhasil', detail: 'Data Berhasil Diperbarui' });
-                    this.handleBackToList();
+
+                    if (this.IsProfilePage) {
+                        this.handleGetById();
+                    } else {
+                        this.handleBackToList();
+                    }
                 }
             })
     }
