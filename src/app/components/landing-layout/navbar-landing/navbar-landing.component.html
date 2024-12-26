@@ -1,0 +1,49 @@
+<div class="flex items-center justify-between gap-2 w-full h-[4.5rem] bg-white shadow-md px-5 z-10 fixed">
+    <!-- Brand -->
+    <div class="flex gap-2 items-center">
+        <img src="../../../../assets/logo_2.png" alt="logo" class="h-[1rem] md:h-[2rem]">
+        <div class="flex flex-col">
+            <p class="text-blue-900 text-xl md:text-2xl font-semibold leading-4">
+                Segara Tumbler
+            </p>
+            <p class="text-gray-600 text-xs">
+                Your Tumbler Partner
+            </p>
+        </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="flex gap-7">
+        <span class="cursor-pointer" (click)="scrollToView('beranda')">
+            <a class="text-gray-700 font-medium no-underline hover:text-blue-900 transition-all">
+                Beranda
+            </a>
+        </span>
+
+        <span class="cursor-pointer" (click)="scrollToView('tentang_kami')">
+            <a class="text-gray-700 font-medium no-underline hover:text-blue-900 transition-all">
+                Tentang Kami
+            </a>
+        </span>
+
+        <span class="cursor-pointer" (click)="scrollToView('fitur')">
+            <a class="text-gray-700 font-medium no-underline hover:text-blue-900 transition-all">
+                Fitur Produk
+            </a>
+        </span>
+
+        <span class="cursor-pointer" (click)="scrollToView('faq')">
+            <a class="text-gray-700 font-medium no-underline hover:text-blue-900 transition-all">
+                FAQ
+            </a>
+        </span>
+    </div>
+
+    <!-- Button -->
+    <div class="flex gap-4 defaultFont">
+        <p-button severity="success" label="Hubungi Kami" icon="pi pi-whatsapp" styleClass="p-button-sm defaultFont">
+        </p-button>
+
+        <p-button severity="info" label="Login" styleClass="p-button-sm defaultFont"></p-button>
+    </div>
+</div>

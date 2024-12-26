@@ -1,0 +1,147 @@
+<app-content-landing>
+    <!-- Banner -->
+    <div id="beranda"
+        class="flex flex-col justify-center h-[60vh] md:h-[75vh] w-full background_image_carousel px-10 md:px-16"
+        style="background-repeat: no-repeat; background-size: cover; background-position: center center;">
+
+        <div class="flex flex-col w-full md:w-6/12">
+            <p class="text-2xl md:text-5xl font-semibold text-gray-800 font-lora mb-4">
+                Segara Tumbler
+            </p>
+
+            <p class="text-sm text-gray-600 mb-5">
+                Dengan fitur lengkap, sesuai standar untuk management kebutuhan air minum Anda.
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-3">
+                <p-button severity="success" icon="pi pi-whatsapp" label="Hubungi Kami"
+                    styleClass="p-button-sm defaultFont" (onClick)="onOpenWhatsapp()">
+                </p-button>
+
+                <p-button severity="info" label="Login" (onClick)="goToClientAuth()"
+                    styleClass="p-button-sm defaultFont">
+                </p-button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tentang Kami -->
+    <div id="tentang_kami"
+        class="flex flex-col-reverse md:flex-row-reverse md:items-start gap-5 md:gap-5 bg-white py-16 px-10 md:px-44">
+        <div class="flex w-full md:w-5/12">
+            <img src="../../../../assets/undraw_coffee-with-friends_ocg2.svg" alt="faq"
+                class="h-auto md:h-[23rem] w-full">
+        </div>
+
+        <div class="w-full md:w-7/12 flex flex-col">
+            <p class="text-xl md:text-4xl font-lora font-semibold text-gray-800 text-start mb-0 leading-relaxed">
+                Tentang Kami
+            </p>
+
+            <p class="text-sm md:text-base text-gray-600 text-start mb-10">
+                Ketahui lebih dalam tentang Segara Tumbler
+            </p>
+
+            <p class="text-sm md:text-base text-gray-800 text-start mb-10">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+            </p>
+        </div>
+    </div>
+
+    <!-- Why Us -->
+    <div id="fitur" class="flex flex-col items-center justify-center gap-2 bg-gray-50 px-10 md:px-16 pt-16 pb-10">
+        <p class="text-4xl font-lora font-semibold text-gray-800">
+            Mengapa Pilih <span class="text-blue-900">Segara</span> Tumbler?
+        </p>
+
+        <p class="text-sm text-gray-500 mb-5">
+            Mulai petualangan anda bersama kami. Segara Tumbler siap memberikan yang terbaik.
+        </p>
+
+        <p class="text-base text-gray-700 text-justify">
+            Segara Tumbler merupakan Sistem Aplikasi Kebutuhan Air Minum Berbasis Cloud yang terintegrasi
+            dengan Perangkat Tumbler. Segara Tumbler hadir sebagai solusi manajemen informasi kebutuhan air minum
+            berbasis cloud profesional sehingga platform ini dapat diakses berbagai device yang didesain simple dan
+            mudah digunakan untuk Anda.
+        </p>
+
+    </div>
+
+    <!-- Fitur -->
+    <div *ngIf="Fitur$ | async as fitur" class="w-full bg-gray-50">
+        <p-carousel [value]="fitur" [numVisible]="4" [numScroll]="1" [circular]="false"
+            [responsiveOptions]="CarouselResponsiveOptions" [autoplayInterval]="10000" [showIndicators]="true"
+            [showNavigators]="true" styleClass="carousel_beranda w-full">
+            <ng-template let-data pTemplate="item">
+                <div class="flex flex-col justify-center px-5 mb-5">
+                    <div class="flex flex-col justify-center w-full bg-white rounded-xl shadow-lg p-3">
+                        <i [class]="data.icon + ' text-blue-900 font-medium mb-3'" style="font-size: 30px;"></i>
+
+                        <div class="flex flex-col gap-3 h-[4.5rem]">
+                            <p class="text-xl font-lora text-gray-800 font-semibold leading-tight">
+                                {{ data.title }}
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-3 h-[12rem]">
+                            <p class="text-sm text-gray-500 text-justify leading-snug">
+                                {{ data.content }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-carousel>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex md:px-56 px-10 md:py-16 py-10 bg-white">
+        <div class="flex flex-col w-full bg-blue-900 p-8 rounded-xl items-center justify-center">
+            <p class="text-2xl text-gray-50 font-medium mb-2">
+                Coba Layanan Segara Tumbler Sekarang!
+            </p>
+            <p class="text-base text-gray-100 mb-5">
+                Coba sekarang dan temukan kenyamanan dalam menggunakan layanan kami.
+            </p>
+
+            <div class="flex md:flex-row flex-col gap-5">
+                <p-button severity="secondary" label="Coba Sekarang" styleClass="p-button-sm defaultFont"
+                    (onClick)="goToClientAuth()">
+                </p-button>
+
+                <p-button severity="secondary" label="Hubungi Kami" styleClass="p-button-sm defaultFont"
+                    (onClick)="onOpenWhatsapp()">
+                </p-button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div id="faq" class="flex flex-col-reverse md:flex-row md:items-start gap-5 md:gap-5 bg-white py-16 px-10 md:px-44">
+        <div class="flex w-full md:w-5/12">
+            <img src="../../../../assets/illustrations.svg" alt="faq" class="h-auto md:h-[23rem] w-full">
+        </div>
+
+        <div class="w-full md:w-7/12 flex flex-col">
+            <p class="text-xl md:text-4xl font-lora font-semibold text-gray-800 text-start mb-0 leading-relaxed">
+                Frequently Asked Questions
+            </p>
+
+            <p class="text-sm md:text-base text-gray-600 text-start mb-10">
+                Temukan jawaban atas pertanyaan umum tentang SatuNapas
+            </p>
+
+            <p-accordion *ngIf="Faq$ | async as faq" [activeIndex]="0" styleClass="defaultFont">
+                <p-accordionTab *ngFor="let item of faq" [header]="item.question" styleClass="defaultFont">
+                    <p class=" text-sm text-gray-700 defaultFont">
+                        {{ item.answer }}
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+    </div>
+</app-content-landing>

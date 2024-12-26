@@ -1,0 +1,106 @@
+<div id="footer-landing" class="flex flex-col md:flex-row w-full bg-gray-200 px-10 md:px-16 pt-16 pb-10">
+    <!-- Logo -->
+    <div class="flex flex-col items-center md:items-start w-full md:w-3/12 mb-5 md:mb-0">
+        <div class="flex gap-2 items-center mb-5">
+            <img src="../../../../assets/logo_2.png" alt="logo" class="h-[1rem] md:h-[2rem]">
+            <div class="flex flex-col">
+                <p class="text-blue-900 text-xl md:text-2xl font-semibold leading-4">
+                    Segara Tumbler
+                </p>
+                <p class="text-gray-600 text-xs">
+                    Your Tumbler Partner
+                </p>
+            </div>
+        </div>
+
+
+        <p class="text-gray-600 text-base">
+            PT. Segara Tumbler,
+        </p>
+        <p class="text-gray-600 text-base">
+            Jl. Indonesia Raya 1,
+        </p>
+        <p class="text-gray-600 text-base mb-5">
+            DKI Jakarta, Indonesia
+        </p>
+
+        <div class="flex gap-2 cursor-pointer">
+            <p class="text-gray-700 text-base font-medium" (click)="onOpenWhatsapp()">
+                Telepon : +6285731336901
+            </p>
+        </div>
+
+        <div class="flex gap-2">
+            <p class="text-gray-700 text-base font-medium">
+                {{'Email : marketing@segaratumbler.com'}}
+            </p>
+        </div>
+    </div>
+
+    <!-- Fitur Aplikasi -->
+    <div class="flex flex-col items-center gap-0 w-full md:w-3/12 mb-5 md:mb-0">
+        <p class="text-gray-800 font-medium text-lg text-center mb-5">
+            Fitur Aplikasi
+        </p>
+
+        <p *ngFor="let item of Fitur$ | async" class="text-gray-600 text-sm text-start mb-2">
+            {{ item.title }}
+        </p>
+    </div>
+
+    <!-- Halaman -->
+    <div class="flex flex-col items-center gap-0 w-full md:w-3/12 mb-5 md:mb-0">
+        <p class="text-gray-800 font-medium text-lg mb-5">
+            Halaman
+        </p>
+
+        <span class="cursor-pointer mb-2 text-center" (click)="scrollToView('beranda')">
+            <p class="text-sm text-slate-700">
+                Beranda
+            </p>
+        </span>
+
+        <span class="cursor-pointer mb-2" (click)="scrollToView('tentang_kami')">
+            <p class="text-sm text-slate-700">
+                Tentang Kami
+            </p>
+        </span>
+
+        <span class="cursor-pointer mb-2" (click)="scrollToView('fitur')">
+            <p class="text-sm text-slate-700">
+                Fitur Produk
+            </p>
+        </span>
+
+        <span class="cursor-pointer mb-2" (click)="onOpenWhatsapp()">
+            <p class="text-sm text-slate-700">
+                Hubungi Kami
+            </p>
+        </span>
+    </div>
+
+    <!-- Kontak -->
+    <div class="flex flex-col items-center gap-0 w-full md:w-3/12">
+        <p class="text-gray-800 font-medium text-lg mb-5">
+            Tetap Terhubung Dengan Kami
+        </p>
+
+        <div class="flex w-full mb-10 items-center justify-center">
+            <p-button icon="pi pi-whatsapp" [rounded]="true" [text]="true" size="large" severity="secondary"
+                (onClick)="onOpenWhatsapp()" />
+            <p-button icon="pi pi-facebook" [rounded]="true" [text]="true" size="large" severity="secondary" />
+            <p-button icon="pi pi-instagram" [rounded]="true" [text]="true" size="large" severity="secondary" />
+            <p-button icon="pi pi-linkedin" [rounded]="true" [text]="true" size="large" severity="secondary" />
+        </div>
+    </div>
+</div>
+<div
+    class="flex flex-col md:flex-row w-full bg-gray-800 md:justify-between justify-center items-center px-10 md:px-16 md:gap-0 gap-1 md:h-[3rem] py-1 md:py-0">
+    <p class="text-gray-300 text-sm">
+        <span class="font-medium">{{ Year }}</span> . All Rights Reserved
+    </p>
+
+    <p class="text-gray-300 text-sm">
+        Segara Tumbler
+    </p>
+</div>

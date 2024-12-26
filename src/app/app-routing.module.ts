@@ -4,8 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard/login',
-        pathMatch: 'full'
+        loadComponent: async () => (await import('./pages/landing/lp-home/lp-home.component')).LpHomeComponent
     },
     {
         path: 'dashboard',
