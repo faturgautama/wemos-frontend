@@ -66,9 +66,6 @@ export class DsLoginComponent implements OnInit, OnDestroy {
                     this._messageService.clear();
                     this._messageService.add({ severity: 'success', summary: 'Berhasil', detail: 'Login berhasil' });
                     this._router.navigateByUrl('/dashboard/beranda');
-                } else {
-                    this._messageService.clear();
-                    this._messageService.add({ severity: 'error', summary: 'Gagal', detail: result.message });
                 }
             });
     }
@@ -82,9 +79,6 @@ export class DsLoginComponent implements OnInit, OnDestroy {
                     this._messageService.clear();
                     this._messageService.add({ severity: 'success', summary: 'Berhasil', detail: 'Login berhasil' });
                     this._router.navigateByUrl('/dashboard/beranda');
-                } else {
-                    this._messageService.clear();
-                    this._messageService.add({ severity: 'error', summary: 'Gagal', detail: result.message });
                 }
             });
     }

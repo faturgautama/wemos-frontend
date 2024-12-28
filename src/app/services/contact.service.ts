@@ -8,6 +8,6 @@ export class ContactService {
     constructor() { }
 
     onGoToWhatsapp() {
-        window.open("https://api.whatsapp.com/send/?phone=6285731336901&text=Halo, saya ingin bertanya soal Segara Tumbler");
+        window.open("https://api.whatsapp.com/send/?phone=6282211777452&text=Halo, saya ingin bertanya soal Segara Tumbler");
     }
 }

@@ -102,9 +102,7 @@ export class HttpOperationService {
                     // ** Jika status = false
                     if (!result.status) {
                         this._messageService.clear();
-                        (<any>result.message).forEach((item: string) => {
-                            this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(item) })
-                        })
+                        this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(result.message) })
                     }
 
                     return result;
@@ -130,9 +128,7 @@ export class HttpOperationService {
                     // ** Jika status = false
                     if (!result.status) {
                         this._messageService.clear();
-                        (<any>result.message).forEach((item: string) => {
-                            this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(item) })
-                        })
+                        this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(result.message) })
                     }
 
                     return result;
@@ -207,9 +203,8 @@ export class HttpOperationService {
                     // ** Jika status = false
                     if (!result.status) {
                         this._messageService.clear();
-                        (<any>result.message).forEach((item: string) => {
-                            this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(item) })
-                        })
+                        this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(result.message) })
+
                     }
 
 
@@ -236,9 +231,8 @@ export class HttpOperationService {
                     // ** Jika status = false
                     if (!result.status) {
                         this._messageService.clear();
-                        (<any>result.message).forEach((item: string) => {
-                            this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(item) })
-                        })
+                        this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(result.message) })
+
                     }
 
                     return result;
@@ -275,9 +269,8 @@ export class HttpOperationService {
                     // ** Jika status = false
                     if (!result.status) {
                         this._messageService.clear();
-                        (<any>result.message).forEach((item: string) => {
-                            this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(item) })
-                        })
+                        this._messageService.add({ severity: 'warn', summary: 'Oops', detail: this._titleCasePipe.transform(result.message) })
+
                     }
 
                     return result;
