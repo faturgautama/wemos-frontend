@@ -7,6 +7,8 @@ import { DashboardLayoutComponent } from 'src/app/components/dashboard-layout/da
 import { DashboardModel } from 'src/app/model/components/dashboard.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { KnobModule } from 'primeng/knob';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-ds-home',
@@ -14,7 +16,9 @@ import { CustomerService } from 'src/app/services/customer.service';
     imports: [
         CommonModule,
         DashboardLayoutComponent,
-        NgApexchartsModule
+        NgApexchartsModule,
+        KnobModule,
+        FormsModule,
     ],
     templateUrl: './ds-home.component.html',
     styleUrl: './ds-home.component.scss'
@@ -33,6 +37,8 @@ export class DsHomeComponent implements OnInit, OnDestroy {
     Chart: any = {};
 
     ChartKonsumsiHariIni: any = {};
+
+    TotalConsumeTodayInPersen: number = 0;
 
     ReportCustomer: any;
 
@@ -308,11 +314,11 @@ export class DsHomeComponent implements OnInit, OnDestroy {
 
                     result.data['today_consume'].forEach((item: any) => {
                         const date_time = formatDate(new Date(item.date_time), 'HH:mm', 'EN');
-                        console.log("time consume =>", date_time);
-
                         this.ChartKonsumsiHariIni.labels.push(date_time);
                         this.ChartKonsumsiHariIni.series[0].data.push(item.litre);
                     });
+
+                    this.TotalConsumeTodayInPersen = result.data.total_consume_today_persen
                 }
             })
     }

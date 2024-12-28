@@ -23,12 +23,12 @@
 
     <div *ngIf="UserData$ | async as user">
         <!-- Counting -->
-        <div *ngIf="user.id_customer" class="grid grid-cols-4 grid-row-1 gap-4 w-full mb-5">
+        <div *ngIf="user.id_customer" class="grid grid-cols-5 grid-row-1 gap-4 w-full mb-5">
             <!-- Total -->
             <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3 justify-center">
                 <div class="flex w-full items-start mb-3">
                     <p class="text-sky-500 font-medium text-5xl text-center">
-                        {{ ReportCustomer?.total_consume }} Litre
+                        {{ ReportCustomer?.total_consume }}&nbsp;<span class="text-base text-gray-700">Litre</span>
                     </p>
 
                     <span class="ml-auto cursor-pointer">
@@ -45,7 +45,8 @@
             <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3 justify-center">
                 <div class="flex w-full items-start mb-3">
                     <p class="text-sky-500 font-medium text-5xl text-center">
-                        {{ ReportCustomer?.total_consume_today }} Litre
+                        {{ ReportCustomer?.total_consume_today }}&nbsp;<span
+                            class="text-base text-gray-700">Litre</span>
                     </p>
 
                     <span class="ml-auto cursor-pointer">
@@ -62,7 +63,7 @@
             <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3 justify-center">
                 <div class="flex w-full items-start mb-3">
                     <p class="text-sky-500 font-medium text-5xl text-center">
-                        {{ ReportCustomer?.total_fill }} Litre
+                        {{ ReportCustomer?.total_fill }}&nbsp;<span class="text-base text-gray-700">Litre</span>
                     </p>
 
                     <span class="ml-auto cursor-pointer">
@@ -79,7 +80,7 @@
             <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3 justify-center">
                 <div class="flex w-full items-start mb-3">
                     <p class="text-sky-500 font-medium text-5xl text-center">
-                        {{ ReportCustomer?.total_fill_today }} Litre
+                        {{ ReportCustomer?.total_fill_today }}&nbsp;<span class="text-base text-gray-700">Litre</span>
                     </p>
 
                     <span class="ml-auto cursor-pointer">
@@ -89,6 +90,17 @@
 
                 <p class="text-gray-700 text-sm">
                     Total Isi Ulang Hari Ini
+                </p>
+            </div>
+
+            <!-- Knob -->
+            <div class="flex flex-col w-full rounded-lg shadow-sm bg-white p-3 justify-center">
+                <div class="flex w-full items-start justify-center  mb-3">
+                    <p-knob [(ngModel)]="TotalConsumeTodayInPersen" valueTemplate="{value}%" [readonly]="true" />
+                </div>
+
+                <p class="text-gray-700 text-sm text-center">
+                    Persentase Konsumsi Hari Ini
                 </p>
             </div>
         </div>

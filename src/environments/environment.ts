@@ -4,8 +4,8 @@
 
 export const environment = {
     production: false,
-    socket: "https://wemos.fgdevstudio.web.id",
-    api: "https://wemos.fgdevstudio.web.id/api/v1",
+    socket: "http://localhost:3055",
+    api: "http://localhost:3055/api/v1",
 };
 
 /*
