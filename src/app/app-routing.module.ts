@@ -9,7 +9,7 @@ const routes: Routes = [
     {
         path: 'dashboard',
         loadChildren: async () => (await import('./pages/dashboard/dashboard.routes')).dashboardRoutes
-    }
+    },
     {
         path: '**',
         loadComponent: async () => (await import('./pages/wildcard/wildcard.component')).WildcardComponent
